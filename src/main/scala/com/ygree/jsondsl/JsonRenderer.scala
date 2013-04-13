@@ -4,17 +4,14 @@ trait JsonRenderer {
   def render(json: Json): String
 }
 
-class SimpleJsonRenderer extends JsonRenderer {
+class CompactJsonRenderer(valRenderer: JsonValRenderer = StandardJsonValRenderer) extends JsonRenderer {
   
   import Json._
   
   def render(json: Json) = json match {
-    case LongVal(value) => value.toString
-    case StringVal(value) => s""""$value""""
     case Array(values) => "["+(values map render mkString ",")+"]"
     case Object(entries) => "{"+(entries map render mkString ",")+"}"
-    case Null => "null"
-    case BooleanVal(value) => value.toString
+    case value: Val => valRenderer.render(value)
   }
   
   def render(entry: Entry): String = {

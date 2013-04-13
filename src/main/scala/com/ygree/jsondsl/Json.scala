@@ -6,12 +6,6 @@ object Json {
   type Key = String
   type Entry = (Key, Json)
   
-  lazy val DefaultRenderer = new PrettyJsonRenderer
-  
-  implicit class Renderable(val json: Json) extends AnyVal {
-    def render(implicit renderer: JsonRenderer = DefaultRenderer): String = renderer.render(json)
-  }
-  
   case class Object(fields: Seq[Entry]) extends Json
   case class Array(values: Seq[Json]) extends Json
   
@@ -29,4 +23,10 @@ object Json {
   
   case class BooleanVal(value: Boolean) extends Number
   implicit def fromBoolean(value: Boolean): BooleanVal = BooleanVal(value)
+
+  lazy val DefaultRenderer = new PrettyJsonRenderer
+  
+  implicit class Renderable(val json: Json) extends AnyVal {
+    def render(implicit renderer: JsonRenderer = DefaultRenderer): String = renderer.render(json)
+  }  
 }

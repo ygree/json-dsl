@@ -5,10 +5,10 @@ import org.junit.runner.RunWith
 import org.specs2.runner.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class JsonSimpleRenderTest extends Specification {
+class CompactJsonRendererTest extends Specification {
 
   import JsonBuilder._
-  implicit val JsonRenderer = new SimpleJsonRenderer
+  implicit val JsonRenderer = new CompactJsonRenderer()
   
   "JsonSimpleRender" should {
     "render json object" >> {

@@ -8,7 +8,7 @@ import org.specs2.runner.JUnitRunner
 class JsonDslTest extends Specification {
 
   import JsonBuilder._
-  implicit val JsonRenderer = new SimpleJsonRenderer
+//  implicit val JsonRenderer = new SimpleJsonRenderer
   
   "Json.Object" should {
     "let access members" >> {
