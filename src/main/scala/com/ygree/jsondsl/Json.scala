@@ -12,7 +12,7 @@ object Json {
     def render(implicit renderer: JsonRenderer = DefaultRenderer): String = renderer.render(json)
   }
   
-  case class Object(fields: Map[Key, Json]) extends Json {
+  case class Object(fields: Seq[Entry]) extends Json {
     //TODO access methods
   }
   case class Array(values: Seq[Json]) extends Json {

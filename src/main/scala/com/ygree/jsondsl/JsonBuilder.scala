@@ -4,7 +4,7 @@ object JsonBuilder {
   import Json._ 
   
   def obj(entries: Entry*): Object = {
-    Object(entries.toMap)
+    Object(entries.toSeq)
   }
   
   def array(values: Json*): Array = {

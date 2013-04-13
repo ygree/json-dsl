@@ -5,9 +5,20 @@ trait JsonRenderer {
 }
 
 class SimpleJsonRenderer extends JsonRenderer {
-  def render(json: Json) = {
-    ""
+  
+  import Json._
+  
+  def render(json: Json) = json match {
+    case LongVal(value) => ""+value
+    case StringVal(value) => s""""$value""""
+    case Array(values) => "["+(values map render mkString ",")+"]"
+    case Object(entries) => "{"+(entries map render mkString ",")+"}"
   }
+  
+  def render(entry: Entry): String = {
+    val (k, v) = entry
+    s""""$k":${render(v)}"""
+  } 
 }
 
 class PrettyJsonRenderer extends JsonRenderer {
@@ -15,16 +26,3 @@ class PrettyJsonRenderer extends JsonRenderer {
     "*"
   }
 }
-
-/**
-  def render(entry: Entry): String = {
-    val (k, v) = entry
-    s""""$k":${v.toString}"""
-  } 
-    override def toString = {
-      val renderedFields = fields map render mkString ",\n"
-      "{" + renderedFields + "}"
-    }
-    override def toString = s""""$value""""
-    override def toString = value.toString
-*/

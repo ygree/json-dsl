@@ -4,7 +4,6 @@ import org.specs2.mutable._
 import org.junit.runner.RunWith
 import org.specs2.runner.JUnitRunner
 
-//import scala.language.dynamics
 @RunWith(classOf[JUnitRunner])
 class JsonDslTest extends Specification {
 
@@ -31,4 +30,3 @@ class JsonDslTest extends Specification {
     )
   }
 }
-
