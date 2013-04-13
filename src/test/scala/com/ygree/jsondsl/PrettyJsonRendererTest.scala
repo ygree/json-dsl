@@ -28,8 +28,7 @@ class PrettyJsonRendererTest extends Specification {
       array().render === "[ ]"
     }
     "render non-empty array" >> {
-      todo
-//      array("a", true, 2, obj()).render === """[ "a", true, 2, { } ]"""
+      array("a", true, 2, obj()).render === """[ "a" , true , 2 , { } ]"""
     }
     
 //    "render json object" >> {
