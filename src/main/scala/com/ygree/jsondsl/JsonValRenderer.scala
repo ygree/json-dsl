@@ -10,6 +10,7 @@ object JsonValRendererStandard extends JsonValRenderer {
   
   def render(value: Val) = value match {
     case LongVal(value) => value.toString
+    case DoubleVal(value) => value.toString
     case StringVal(value) => s""""$value""""
     case Null => "null"
     case BooleanVal(value) => value.toString

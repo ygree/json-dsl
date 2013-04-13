@@ -11,7 +11,7 @@ object JsonBuilder {
     }
     require(
       dupKeys.isEmpty, 
-      "Json.Object creating impossible, properties mustn't contain duplicate keys: "+dupKeys.mkString(", ")
+      "Json.Object creating impossible, properties can't contain duplicate keys: "+dupKeys.mkString(", ")
     )
     Object(ListMap(properties: _*))
   }
@@ -19,4 +19,6 @@ object JsonBuilder {
   def array(elements: Json*) = Array(elements.toSeq)
   
   def nul() = Null
+  
+  def prop(p: Property): Property = p 
 }

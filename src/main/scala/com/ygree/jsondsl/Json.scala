@@ -17,9 +17,12 @@ object Json {
   implicit def fromString(value: String): StringVal = StringVal(value)
   
   sealed trait Number extends Val
+  
   case class LongVal(value: Long) extends Number
   implicit def fromLong(value: Long): LongVal = LongVal(value)
-  //TODO Double
+  
+  case class DoubleVal(value: Double) extends Number
+  implicit def fromDouble(value: Double): DoubleVal = DoubleVal(value)
   
   object Null extends Val
   
@@ -30,5 +33,5 @@ object Json {
   
   implicit class Renderable(val json: Json) extends AnyVal {
     def render(implicit renderer: JsonRenderer = DefaultRenderer): String = renderer.render(json)
-  }  
+  }
 }
