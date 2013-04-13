@@ -22,3 +22,9 @@ object JsonBuilder {
   
   def prop(p: Property): Property = p 
 }
+
+object JsonBuliderCommaFree {
+  import Json._
+  
+  
+}

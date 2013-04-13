@@ -1,4 +1,6 @@
-package com.ygree.jsondsl
+package com.ygree.jsondsl.sample
+
+import com.ygree.jsondsl.JsonBuilder
 
 object Sample {
 
@@ -19,7 +21,7 @@ object Sample {
     
     val json = obj(
       "amount" -> 44.55 ,
-      "ids" -> array(1,2,15,99,36),
+      "ids" -> array(1,2,15,99,36,true,"55"),
       "books" -> array(
         obj(
           "title" -> "Book Title #1",
@@ -32,6 +34,7 @@ object Sample {
       )
     )
     
-    println(json.render)
+    println(json.pretty)
+    println(json.compact)
   }
 }
