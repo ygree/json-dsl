@@ -4,7 +4,7 @@ trait JsonValRenderer {
   def render(value: Json.Val): String
 }
 
-object StandardJsonValRenderer extends JsonValRenderer {
+object JsonValRendererStandard extends JsonValRenderer {
   
   import Json._
   

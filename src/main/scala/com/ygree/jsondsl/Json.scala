@@ -24,7 +24,7 @@ object Json {
   case class BooleanVal(value: Boolean) extends Number
   implicit def fromBoolean(value: Boolean): BooleanVal = BooleanVal(value)
 
-  lazy val DefaultRenderer = new PrettyJsonRenderer
+  lazy val DefaultRenderer = new JsonRendererPretty
   
   implicit class Renderable(val json: Json) extends AnyVal {
     def render(implicit renderer: JsonRenderer = DefaultRenderer): String = renderer.render(json)

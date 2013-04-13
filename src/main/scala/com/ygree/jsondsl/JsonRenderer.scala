@@ -4,7 +4,7 @@ trait JsonRenderer {
   def render(json: Json): String
 }
 
-class JsonRendererCompact(valRenderer: JsonValRenderer = StandardJsonValRenderer) extends JsonRenderer {
+class JsonRendererCompact(valRenderer: JsonValRenderer = JsonValRendererStandard) extends JsonRenderer {
 
   import Json._
 
@@ -20,11 +20,11 @@ class JsonRendererCompact(valRenderer: JsonValRenderer = StandardJsonValRenderer
   }
 }
 
-class PrettyJsonRenderer
+class JsonRendererPretty
 (
   tab: Int = 2,
   lineCapacity: Int = 80,
-  valRenderer: JsonValRenderer = StandardJsonValRenderer
+  valRenderer: JsonValRenderer = JsonValRendererStandard
   ) extends JsonRenderer 
 {
   def render(json: Json) = renderImpl(json)(RenderContext())
@@ -73,7 +73,6 @@ class PrettyJsonRenderer
       val newContext = context.indent(tab)
 	  xs map { x => newContext.prefix + render(x)(newContext) } mkString verticalSeparator
     }
-    
   }
   
   object ArrayRenderer extends ContainerRenderer {

@@ -9,7 +9,7 @@ class PrettyJsonRendererTest extends Specification {
 
   import JsonBuilder._
   
-  implicit val PrettyJsonRenderer = new PrettyJsonRenderer(lineCapacity = 11)
+  implicit val PrettyJsonRenderer = new JsonRendererPretty(lineCapacity = 11)
   
   "PrettyJsonRenderer" should {
     "render empty object in one line" >> {
@@ -36,7 +36,7 @@ class PrettyJsonRendererTest extends Specification {
         |]""".stripMargin
     }
     "render complex object" >> {
-      val r = new PrettyJsonRenderer(lineCapacity = 40)
+      val r = new JsonRendererPretty(lineCapacity = 40)
       obj(
         "abc" -> array(
           obj(
