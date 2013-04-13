@@ -14,8 +14,8 @@ class JsonRendererCompact(valRenderer: JsonValRenderer = JsonValRendererStandard
     case value: Val => valRenderer.render(value)
   }
 
-  def render(entry: Entry): String = {
-    val (k, v) = entry
+  def render(Property: Property): String = {
+    val (k, v) = Property
     s""""$k":${render(v)}"""
   }
 }
@@ -44,7 +44,7 @@ class JsonRendererPretty
 
   def renderImpl(json: Json)(implicit context: RenderContext): String = json match {
     case value: Val => valRenderer.render(value)
-    case Object(properties) => ObjectRenderer.render(properties)
+    case Object(properties) => ObjectRenderer.render(properties.toSeq)
     case Array(elements) => ArrayRenderer.render(elements)
   }
   
@@ -84,7 +84,7 @@ class JsonRendererPretty
   }
 
   object ObjectRenderer extends ContainerRenderer {
-    type T = Entry
+    type T = Property
     val openBrace = "{"
     val closeBrace = "}"
     

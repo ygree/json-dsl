@@ -1,13 +1,16 @@
 package com.ygree.jsondsl
 
+import scala.collection.immutable.ListMap
+
 sealed trait Json
 
 object Json {
   type Key = String
-  type Entry = (Key, Json)
+  type Property = (Key, Json)
   
-  case class Object(fields: Seq[Entry]) extends Json
-  case class Array(values: Seq[Json]) extends Json
+  case class Object(properties: ListMap[Key, Json]) extends Json {
+  }
+  case class Array(elements: Seq[Json]) extends Json
   
   sealed trait Val extends Json
   
