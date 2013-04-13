@@ -23,8 +23,10 @@ object Json {
   sealed trait Number extends Val
   case class LongVal(value: Long) extends Number
   implicit def fromLong(value: Long): LongVal = LongVal(value)
+  //TODO Double
   
   object Null extends Val
-  //TODO Double
-  //TODO Boolean
+  
+  case class BooleanVal(value: Boolean) extends Number
+  implicit def fromBoolean(value: Boolean): BooleanVal = BooleanVal(value)
 }
