@@ -24,22 +24,4 @@ class JsonDslTest extends Specification {
       obj("a" -> 1, "a" -> 2) must throwA[IllegalArgumentException]
     }
   }
-
-  "Json.Object" should {
-    "let access members" >> {
-      todo
-    }
-    "compare json objects" >> {
-      todo
-    }
-  }
-
-  "Json.render" should {
-    "delegate rendering to implicit JsonRenderer in scope" >> {
-      implicit val renderer = new JsonRenderer {
-        def render(json: Json): String = "exp324"
-      }
-      Json.Object(ListMap()).render === "exp324" //TODO use ScalaMock
-    }
-  }
 }
