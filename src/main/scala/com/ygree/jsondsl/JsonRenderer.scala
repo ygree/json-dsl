@@ -37,9 +37,10 @@ class PrettyJsonRenderer
     def enoughSpaceFor(line: String): Option[String] = {
       println(prefix+line)
       println("^" * leftCapacity)
-      if (line.length > leftCapacity) None
+      if (isEnoughLeftCapacity(line)) None
       else Some(line)
     } 
+    def isEnoughLeftCapacity(line: String): Boolean = line.length > leftCapacity
   }
 
   import Json._
@@ -52,11 +53,7 @@ class PrettyJsonRenderer
       "{ "+renderPropertiesHorizontal(properties)+" }" getOrElse 
       "{\n"+renderPropertiesVertical(properties)(context.fieldNameIndent(0))+"\n"+context.prefix+"}"
     case Array(Nil) => "[ ]"
-    case Array(elements) =>
-      ArrayRenderer.render(elements)
-//      context enoughSpaceFor 
-//      "[ "+renderElementsHorizontal(elements)+" ]" getOrElse 
-//      "[\n"+renderElementsVertical(elements)(context.fieldNameIndent(0))+"\n"+context.prefix+"]"
+    case Array(elements) => ArrayRenderer.render(elements)
   }
   
   trait ContainerRenderer {
@@ -64,17 +61,18 @@ class PrettyJsonRenderer
     type T
     
     def openBrace: String
-    def closeBrance: String
+    def closeBrace: String
     def verticalSeparator = " ,\n"
     def horizontalSeparator = " , "
+    def renderedEmptyContainer = openBrace + " " + closeBrace
     
     def render(x: T)(implicit context: RenderContext): String
 
-    def render(xs: Seq[T])(implicit context: RenderContext): String = {
-      context enoughSpaceFor 
-      openBrace+" "+renderHorizontal(xs)+" "+closeBrance getOrElse 
-      openBrace+"\n"+renderVertical(xs)(context.fieldNameIndent(0))+"\n"+context.prefix+closeBrance
-    }
+    def render(xs: Seq[T])(implicit context: RenderContext): String =
+      if (xs.isEmpty) renderedEmptyContainer
+      else context enoughSpaceFor 
+      	openBrace+" "+renderHorizontal(xs)+" "+closeBrace getOrElse 
+      	openBrace+"\n"+renderVertical(xs)(context.fieldNameIndent(0))+"\n"+context.prefix+closeBrace
     
     def renderHorizontal(xs: Seq[T])(implicit context: RenderContext): String = {
       xs map render mkString horizontalSeparator
@@ -90,7 +88,7 @@ class PrettyJsonRenderer
   object ArrayRenderer extends ContainerRenderer {
     type T = Json 
     val openBrace = "["
-    val closeBrance = "]"
+    val closeBrace = "]"
       
     def render(x: T)(implicit context: RenderContext) = renderImpl(x)
   }
