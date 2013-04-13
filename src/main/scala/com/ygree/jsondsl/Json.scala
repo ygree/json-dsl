@@ -41,4 +41,13 @@ object Json {
     def pretty = render(Pretty)
     def compact = render(Compact)
   }
+  
+  implicit class Selectable(val json: Json) extends AnyVal {
+    def $(path: String*): Json =
+      if (path.isEmpty) json
+      else json match {
+        case Object(ps) => ps(path.head).$(path.tail: _*)
+        case Array(es) => es(path.head.toInt).$(path.tail: _*)
+      }
+  }
 }

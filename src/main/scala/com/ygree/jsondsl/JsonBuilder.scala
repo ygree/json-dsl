@@ -20,5 +20,20 @@ object JsonBuilder {
   
   def nul() = Null
   
-  def prop(p: Property): Property = p 
+  def prop(p: Property): Property = p
+}
+
+object JsonConciseBuilder {
+  import Json._ 
+  import JsonBuilder._
+  
+  def jo(ps: Property*) = obj(ps: _*)
+  
+  def ja(es: Json*) = array(es: _*)
+  
+  def jn = nul()
+  
+  def jp(p: Property) = prop(p)
+  
+  def jv[T <% Json.Val](v: T): Json.Val = v
 }
