@@ -35,9 +35,9 @@ class JsonRendererPretty
     def prefix = " " * indentation
     def leftCapacity = lineCapacity - indentation - fieldNameIndentation
     def enoughSpaceFor(line: String): Option[String] =
-      if (isEnoughLeftCapacity(line)) None
+      if (isEnoughCapacityLeft(line)) None
       else Some(line)
-    def isEnoughLeftCapacity(line: String): Boolean = line.length > leftCapacity
+    def isEnoughCapacityLeft(line: String): Boolean = line.length > leftCapacity
   }
 
   import Json._
