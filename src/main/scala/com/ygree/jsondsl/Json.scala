@@ -8,8 +8,7 @@ object Json {
   type Key = String
   type Property = (Key, Json)
   
-  case class Object(properties: ListMap[Key, Json]) extends Json {
-  }
+  case class Object(properties: ListMap[Key, Json]) extends Json
   case class Array(elements: Seq[Json]) extends Json
   
   sealed trait Val extends Json

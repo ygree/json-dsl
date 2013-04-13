@@ -20,6 +20,9 @@ class JsonDslTest extends Specification {
       
       nul() === Json.Null
     }
+    "prevent creating objects with duplicate fields" >> {
+      obj("a" -> 1, "a" -> 2) must throwA[IllegalArgumentException]
+    }
   }
 
   "Json.Object" should {

@@ -6,7 +6,13 @@ object JsonBuilder {
   import Json._ 
   
   def obj(properties: Property*) = {
-    //TODO check unique of properties
+    val dupKeys = properties.groupBy(_._1) collect {
+      case (k, ps) if ps.size > 1 => k
+    }
+    require(
+      dupKeys.isEmpty, 
+      "Json.Object creating impossible, properties mustn't contain duplicate keys: "+dupKeys.mkString(", ")
+    )
     Object(ListMap(properties: _*))
   }
   
