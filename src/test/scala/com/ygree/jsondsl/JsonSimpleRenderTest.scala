@@ -19,7 +19,7 @@ class JsonSimpleRenderTest extends Specification {
         "e" -> array(),
         "r" -> array("c",7,array("t"),obj("j"->obj())),
         "n" -> nul()
-      ).render === """{"a":"b","c":5,"o":{},"e":[],"r":["c",7,["t"],{"j":{}}],"n":null"""
+      ).render === """{"a":"b","c":5,"o":{},"e":[],"r":["c",7,["t"],{"j":{}}],"n":null}"""
     }
   }
 }
