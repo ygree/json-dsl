@@ -1,7 +1,6 @@
 package com.ygree.jsondsl
 
 trait JsonValRenderer {
-
   def render(value: Json.Val): String
 }
 

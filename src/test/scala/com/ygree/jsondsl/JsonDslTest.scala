@@ -8,8 +8,19 @@ import org.specs2.runner.JUnitRunner
 class JsonDslTest extends Specification {
 
   import JsonBuilder._
-//  implicit val JsonRenderer = new SimpleJsonRenderer
   
+  "JsonBuilder" should {
+    "help to construct Json objects" >> {
+      obj() === Json.Object(Nil)
+      obj("a" -> 4) === Json.Object(Seq("a" -> 4))
+      
+      array() === Json.Array(Nil)
+      array("2") === Json.Array(Seq(Json.StringVal("2")))
+      
+      nul() === Json.Null
+    }
+  }
+
   "Json.Object" should {
     "let access members" >> {
       todo
@@ -18,15 +29,13 @@ class JsonDslTest extends Specification {
       todo
     }
   }
-  
-  def test {
-    val json = obj(
-      "a" -> "b",
-      "c" -> "d",
-      "o" -> obj(
-        "1" -> "a"
-      ),
-      "arr" -> array(1, 2, "j", obj())
-    )
+
+  "Json.render" should {
+    "delegate rendering to implicit JsonRenderer in scope" >> {
+      implicit val renderer = new JsonRenderer {
+        def render(json: Json): String = "exp324"
+      }
+      Json.Object(Nil).render === "exp324" //TODO use ScalaMock
+    }
   }
 }

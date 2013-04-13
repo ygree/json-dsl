@@ -8,6 +8,7 @@ import org.specs2.runner.JUnitRunner
 class CompactJsonRendererTest extends Specification {
 
   import JsonBuilder._
+  
   implicit val JsonRenderer = new CompactJsonRenderer()
   
   "JsonSimpleRender" should {
