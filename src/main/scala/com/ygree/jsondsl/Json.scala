@@ -19,14 +19,20 @@ object Json {
     //TODO access methods
   }
   
-  trait Val extends Json {
-    def value: Any
+  sealed trait Val extends Json {
+//    def value: Any
   }
   
   case class StringVal(value: String) extends Val
   implicit def fromString(value: String): StringVal = StringVal(value)
   
-  //TODO need NumberVal with deserialization ability
-  case class LongVal(value: Long) extends Val
+  sealed trait Number extends Val
+  case class LongVal(value: Long) extends Number
   implicit def fromLong(value: Long): LongVal = LongVal(value)
+  
+  //TODO Double
+  //TODO Boolean
+  object Null extends Val {
+//    def value = null
+  }
 }

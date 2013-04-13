@@ -11,11 +11,11 @@ class JsonDslTest extends Specification {
   implicit val JsonRenderer = new SimpleJsonRenderer
   
   "Json.Object" should {
-    "be rendered as empty" >> {
-      obj().render === "{}"
+    "let access members" >> {
+      todo
     }
-    "be rendered as full" >> {
-      obj("1" -> 2).render === """{"1":2}""" 
+    "compare json objects" >> {
+      todo
     }
   }
   

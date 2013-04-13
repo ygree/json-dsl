@@ -13,6 +13,7 @@ class SimpleJsonRenderer extends JsonRenderer {
     case StringVal(value) => s""""$value""""
     case Array(values) => "["+(values map render mkString ",")+"]"
     case Object(entries) => "{"+(entries map render mkString ",")+"}"
+    case Null => "null"
   }
   
   def render(entry: Entry): String = {
@@ -23,6 +24,6 @@ class SimpleJsonRenderer extends JsonRenderer {
 
 class PrettyJsonRenderer extends JsonRenderer {
   def render(json: Json) = {
-    "*"
+    ???
   }
 }
