@@ -9,7 +9,7 @@ class CompactJsonRendererTest extends Specification {
 
   import JsonBuilder._
   
-  implicit val CompactJsonRenderer = new CompactJsonRenderer()
+  implicit val CompactJsonRenderer = new JsonRendererCompact()
   
   "CompactJsonRenderer" should {
     "render json object" >> {
