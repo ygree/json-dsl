@@ -9,13 +9,14 @@ import org.specs2.runner.JUnitRunner
 class JsonDslTest extends Specification {
 
   import JsonBuilder._
+  implicit val JsonRenderer = new SimpleJsonRenderer
   
   "Json.Object" should {
     "be rendered as empty" >> {
-      obj().toString === "{}"
+      obj().render === "{}"
     }
     "be rendered as full" >> {
-      obj("1" -> 2).toString === """{"1":2}""" 
+      obj("1" -> 2).render === """{"1":2}""" 
     }
   }
   
