@@ -29,12 +29,17 @@ class PrettyJsonRenderer
 {
   def render(json: Json) = renderImpl(json)(RenderContext())
 
-  case class RenderContext(indentation: Int = 0) {
-    def indent(symbols: Int) = RenderContext(indentation = indentation + symbols)
+  case class RenderContext(indentation: Int = 0, fieldNameIndentation: Int = 0) {
+    def indent(symbols: Int) = copy(indentation = indentation + symbols)
+    def fieldNameIndent(symbols: Int) = copy(fieldNameIndentation = symbols)
     def prefix = " " * indentation
-    def enoughSpaceFor(line: String): Option[String] = 
-      if (line.length + indentation > lineCapacity) None
+    def leftCapacity = lineCapacity - indentation - fieldNameIndentation
+    def enoughSpaceFor(line: String): Option[String] = {
+      println(prefix+line)
+      println("^" * leftCapacity)
+      if (line.length > leftCapacity) None
       else Some(line)
+    } 
   }
 
   import Json._
@@ -45,17 +50,19 @@ class PrettyJsonRenderer
     case Object(properties) =>
       context enoughSpaceFor 
       "{ "+renderPropertiesHorizontal(properties)+" }" getOrElse 
-      "{\n"+renderPropertiesVertical(properties)+"\n"+context.prefix+"}"
+      "{\n"+renderPropertiesVertical(properties)(context.fieldNameIndent(0))+"\n"+context.prefix+"}"
     case Array(Nil) => "[ ]"
-    case Array(elements) => 
+    case Array(elements) =>
       context enoughSpaceFor 
       "[ "+renderElementsHorizontal(elements)+" ]" getOrElse 
-      "[\n"+renderElementsVertical(elements)+"\n"+context.prefix+"]"
+//      "[\n"+renderElementsVertical(elements)+"\n"+context.prefix+"]"
+      "[\n"+renderElementsVertical(elements)(context.fieldNameIndent(0))+"\n"+context.prefix+"]"
   }
 
   def renderProperty(prop: Entry)(implicit context: RenderContext): String = {
     val (k, renderProperty) = prop
-    s""""$k" : """ + renderImpl(renderProperty)
+    val prefix = s""""$k" : """ 
+    prefix + renderImpl(renderProperty)(context.fieldNameIndent(prefix.length))
   }
 
   def renderPropertiesHorizontal(properties: Seq[Entry])(implicit context: RenderContext) = {
@@ -76,3 +83,33 @@ class PrettyJsonRenderer
 	elements map { x => newContext.prefix + renderImpl(x)(newContext) } mkString " ,\n"
   }
 }
+
+/*
+java.lang.Exception: '{
+  "abc" : [
+  { } ,
+  false ,
+  "here we go" ,
+  43
+] ,
+  "def" : null ,
+  "ghj" : [
+  [ [ { "a" : true } , 1 ] ]
+]
+}'
+ is not equal to 
+'{
+  "abc" : [
+    { } ,
+    false ,
+    "here we go" ,
+    43
+  ] ,
+  "def" : null ,
+  "ghj" : [ [ [ { "a" : true } , 1 ] ] ]
+}'
+	at com.ygree.jsondsl.PrettyJsonRendererTest$$anonfun$1$$anonfun$apply$16.apply(PrettyJsonRendererTest.scala:50)
+	at com.ygree.jsondsl.PrettyJsonRendererTest$$anonfun$1$$anonfun$apply$16.apply(PrettyJsonRendererTest.scala:38)
+
+
+*/

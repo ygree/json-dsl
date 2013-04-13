@@ -36,7 +36,7 @@ class PrettyJsonRendererTest extends Specification {
         |]""".stripMargin
     }
     "render complex object" >> {
-      val r = new PrettyJsonRenderer(lineCapacity = 36)
+      val r = new PrettyJsonRenderer(lineCapacity = 40)
       obj(
         "abc" -> array(
           obj(
