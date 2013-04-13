@@ -9,7 +9,7 @@ class PrettyJsonRendererTest extends Specification {
 
   import JsonBuilder._
   
-  implicit val PrettyJsonRenderer = new PrettyJsonRenderer()
+  implicit val PrettyJsonRenderer = new PrettyJsonRenderer(lineCapacity = 11)
   
   "PrettyJsonRenderer" should {
     "render empty object in one line" >> {
@@ -22,13 +22,18 @@ class PrettyJsonRendererTest extends Specification {
       obj("a" -> 3, "b" -> 5).render === """{
         |  "a" : 3 ,
         |  "b" : 5
-        |}""".stripMargin.stripLineEnd
+        |}""".stripMargin
     }
     "render empty array" >> {
       array().render === "[ ]"
     }
     "render non-empty array" >> {
-      array("a", true, 2, obj()).render === """[ "a" , true , 2 , { } ]"""
+      array("a", true, 2, obj()).render === """[
+    	|  "a" ,
+        |  true ,
+        |  2 ,
+        |  { }
+        |]""".stripMargin
     }
     
 //    "render json object" >> {
