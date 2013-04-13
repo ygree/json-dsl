@@ -26,9 +26,11 @@ class PrettyJsonRenderer(valRenderer: JsonValRenderer = StandardJsonValRenderer)
 
   case class RenderContext(
     indentation: Int = 0,
-    insideArray: Boolean = false,
-    insideObject: Boolean = false) {
-    def inObj = RenderContext(insideObject = true)
+    isElement: Boolean = false,
+    isProperty: Boolean = false) {
+    def itsProperty = RenderContext(isProperty = true)
+    def indent(symbols: Int) = RenderContext(indentation = indentation + symbols)
+    def prefix = " " * indentation
   }
 
   import Json._
@@ -36,8 +38,21 @@ class PrettyJsonRenderer(valRenderer: JsonValRenderer = StandardJsonValRenderer)
   def renderImpl(json: Json)(implicit context: RenderContext): String = json match {
     case value: Val => valRenderer.render(value) 
     case Object(Nil) => "{ }"
-    case Object(Seq((k, v))) => "{ "+renderPair(k, renderImpl(v)(context.inObj))+" }"
+    case Object(Seq(property)) => "{ "+renderProperty(property)+" }"
+    case Object(pairs) => 
+      context.prefix+"{\n"+
+      renderPropertiesVertical(pairs)+
+      context.prefix+"\n}" 
   }
 
-  def renderPair(k: String, v: String): String = s""""$k" : $v"""
+  def renderProperty(prop: Entry)(implicit context: RenderContext): String = {
+    val (k, renderProperty) = prop
+    val v = renderImpl(renderProperty)(context.itsProperty)
+    val prefix = s""""$k" : """
+    context.prefix + prefix + v
+  } 
+  
+  def renderPropertiesVertical(properties: Seq[Entry])(implicit context: RenderContext) = {
+    properties map { x => renderProperty(x)(context.indent(2)) } mkString " ,\n"
+  }
 }

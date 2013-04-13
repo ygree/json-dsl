@@ -18,6 +18,12 @@ class PrettyJsonRendererTest extends Specification {
     "render one propery object in one line" >> {
       obj("a" -> 2).render === """{ "a" : 2 }"""
     }
+    "render multiline object" >> {
+      obj("a" -> 3, "b" -> 5).render === """{
+        |  "a" : 3 ,
+        |  "b" : 5
+        |}""".stripMargin.stripLineEnd
+    }
 //    "render json object" >> {
 //      obj(
 //        "a" -> "b", 
