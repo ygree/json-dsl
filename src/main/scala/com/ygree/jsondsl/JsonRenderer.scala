@@ -39,10 +39,12 @@ class PrettyJsonRenderer(valRenderer: JsonValRenderer = StandardJsonValRenderer)
     case value: Val => valRenderer.render(value) 
     case Object(Nil) => "{ }"
     case Object(Seq(property)) => "{ "+renderProperty(property)+" }"
-    case Object(pairs) => 
+    case Object(properties) => 
       context.prefix+"{\n"+
-      renderPropertiesVertical(pairs)+
+      renderPropertiesVertical(properties)+
       context.prefix+"\n}" 
+    case Array(Nil) => "[ ]"
+//    case Array(elements) => "[ "+
   }
 
   def renderProperty(prop: Entry)(implicit context: RenderContext): String = {
