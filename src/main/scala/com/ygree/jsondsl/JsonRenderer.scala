@@ -53,10 +53,46 @@ class PrettyJsonRenderer
       "{\n"+renderPropertiesVertical(properties)(context.fieldNameIndent(0))+"\n"+context.prefix+"}"
     case Array(Nil) => "[ ]"
     case Array(elements) =>
+      ArrayRenderer.render(elements)
+//      context enoughSpaceFor 
+//      "[ "+renderElementsHorizontal(elements)+" ]" getOrElse 
+//      "[\n"+renderElementsVertical(elements)(context.fieldNameIndent(0))+"\n"+context.prefix+"]"
+  }
+  
+  trait ContainerRenderer {
+    
+    type T
+    
+    def openBrace: String
+    def closeBrance: String
+    def verticalSeparator = " ,\n"
+    def horizontalSeparator = " , "
+    
+    def render(x: T)(implicit context: RenderContext): String
+
+    def render(xs: Seq[T])(implicit context: RenderContext): String = {
       context enoughSpaceFor 
-      "[ "+renderElementsHorizontal(elements)+" ]" getOrElse 
-//      "[\n"+renderElementsVertical(elements)+"\n"+context.prefix+"]"
-      "[\n"+renderElementsVertical(elements)(context.fieldNameIndent(0))+"\n"+context.prefix+"]"
+      openBrace+" "+renderHorizontal(xs)+" "+closeBrance getOrElse 
+      openBrace+"\n"+renderVertical(xs)(context.fieldNameIndent(0))+"\n"+context.prefix+closeBrance
+    }
+    
+    def renderHorizontal(xs: Seq[T])(implicit context: RenderContext): String = {
+      xs map render mkString horizontalSeparator
+    }
+    
+    def renderVertical(xs: Seq[T])(implicit context: RenderContext): String = {
+      val newContext = context.indent(tab)
+	  xs map { x => newContext.prefix + render(x)(newContext) } mkString verticalSeparator
+    }
+    
+  }
+  
+  object ArrayRenderer extends ContainerRenderer {
+    type T = Json 
+    val openBrace = "["
+    val closeBrance = "]"
+      
+    def render(x: T)(implicit context: RenderContext) = renderImpl(x)
   }
 
   def renderProperty(prop: Entry)(implicit context: RenderContext): String = {
