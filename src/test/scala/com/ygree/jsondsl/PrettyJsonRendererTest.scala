@@ -35,25 +35,28 @@ class PrettyJsonRendererTest extends Specification {
         |  { }
         |]""".stripMargin
     }
-    
-//    "render json object" >> {
-//      obj(
-//        "a" -> "b", 
-//        "c" -> 5,
-//        "o" -> obj(),
-//        "e" -> array(),
-//        "r" -> array("c",7,array("t"),obj("j"->obj())),
-//        "n" -> nul(),
-//        "b" -> false
-//      ).render === """{
-//                     |  "a" : "b" ,
-//                     |  "c" : 5 ,
-//                     |  "o" : { } ,
-//                     |  "e" : [ ] ,
-//                     |  "r" : [ "c", 7, [ "t" ], { "j" : { } } ] , 
-//                     |  "n" : null ,
-//                     |  "b" : false
-//                     |}""".stripMargin
-//    }
+    "render complex object" >> {
+      val r = new PrettyJsonRenderer(lineCapacity = 36)
+      obj(
+        "abc" -> array(
+          obj(
+          ),
+          false,
+          "here we go",
+          43
+        ),
+        "def" -> nul(),
+        "ghj" -> array(array(array(obj("a"->true), 1)))
+      ).render(r) === """{
+        |  "abc" : [
+        |    { } ,
+        |    false ,
+        |    "here we go" ,
+        |    43
+        |  ] ,
+        |  "def" : null ,
+        |  "ghj" : [ [ [ { "a" : true } , 1 ] ] ]
+        |}""".stripMargin
+    }
   }
 }
