@@ -14,5 +14,11 @@ class JsonValRendererStandardTest extends Specification {
     "escape special characters" >> {
       render(StringVal("\"")) === """"\"""""
     }
+    "render real numbers" >> {
+      render(Number(1.23)) === "1.23"
+    }
+    "render integer numbers" >> {
+      render(Number(134)) === "134"
+    }
   }
 }

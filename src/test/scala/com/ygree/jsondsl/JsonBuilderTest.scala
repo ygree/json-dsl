@@ -23,7 +23,7 @@ class JsonBuilderTest extends Specification {
       nul() === Json.Null
     }
     "construct Json property" >> {
-      prop("a" -> 5.55) === "a" -> Json.DoubleVal(5.55)
+      prop("a" -> 5.55) === "a" -> Json.Number(5.55)
     }
     "prevent creating objects with duplicate fields" >> {
       obj("a" -> 1, "a" -> 2) must throwA[IllegalArgumentException]

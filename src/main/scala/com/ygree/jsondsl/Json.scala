@@ -16,17 +16,13 @@ object Json {
   case class StringVal(value: String) extends Val
   implicit def fromString(value: String): StringVal = StringVal(value)
   
-  sealed trait Number extends Val
-  
-  case class LongVal(value: Long) extends Number
-  implicit def fromLong(value: Long): LongVal = LongVal(value)
-  
-  case class DoubleVal(value: Double) extends Number
-  implicit def fromDouble(value: Double): DoubleVal = DoubleVal(value)
+  case class Number(value: Double) extends Val
+  implicit def fromLong(value: Long): Number = Number(value.toDouble)
+  implicit def fromDouble(value: Double): Number = Number(value)
   
   object Null extends Val
   
-  case class BooleanVal(value: Boolean) extends Number
+  case class BooleanVal(value: Boolean) extends Val
   implicit def fromBoolean(value: Boolean): BooleanVal = BooleanVal(value)
 
   object Renderers {
