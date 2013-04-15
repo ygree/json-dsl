@@ -13,7 +13,7 @@ object JsonValRendererStandard extends JsonValRenderer {
   def render(value: Val) = value match {
     case LongVal(value) => value.toString
     case DoubleVal(value) => value.toString
-    case StringVal(value) => s""""${JSONFormat.quoteString(value)}""""
+    case StringVal(value) => '"'+JSONFormat.quoteString(value)+'"'
     case Null => "null"
     case BooleanVal(value) => value.toString
   }

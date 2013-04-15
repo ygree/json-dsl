@@ -35,14 +35,16 @@ object Json {
     lazy val Default = Pretty
   }
   
-  implicit class Renderable(val json: Json) extends AnyVal {
+  implicit def toRenderable(json: Json) = new Renderable(json)
+  class Renderable(json: Json) {
     import Renderers._
     def render(implicit renderer: JsonRenderer = Default): String = renderer.render(json)
     def pretty = render(Pretty)
     def compact = render(Compact)
   }
   
-  implicit class Selectable(val json: Json) extends AnyVal {
+  implicit def toSelectable(json: Json) = new Selectable(json) 
+  class Selectable(json: Json) {
     def $(path: String*): Json =
       if (path.isEmpty) json
       else json match {

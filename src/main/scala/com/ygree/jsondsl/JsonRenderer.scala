@@ -16,7 +16,7 @@ class JsonRendererCompact(valRenderer: JsonValRenderer = JsonValRendererStandard
 
   def render(Property: Property): String = {
     val (k, v) = Property
-    s""""$k":${render(v)}"""
+    '"'+k+'"'+':'+render(v)
   }
 }
 
@@ -90,7 +90,7 @@ class JsonRendererPretty
     
     def render(x: T)(implicit context: RenderContext) = {
       val (k, renderProperty) = x
-      val prefix = s""""$k" : """ 
+      val prefix = '"'+k+'"'+" : " 
       prefix + renderImpl(renderProperty)(context.fieldNameIndent(prefix.length))
     }
   }
