@@ -11,11 +11,12 @@ object JsonValRendererStandard extends JsonValRenderer {
   import Json._
   
   def render(value: Val) = value match {
-    case Number(value) => 
-      val r = value.toString
-      if (r.endsWith(".0")) r.take(r.length - 2) else r
+    case Number(value) => trimSuffix(value.toString, ".0")
     case StringVal(value) => '"'+JSONFormat.quoteString(value)+'"'
     case Null => "null"
     case BooleanVal(value) => value.toString
   }
+  
+  private def trimSuffix(s: String, suffix: String): String =
+    if (s endsWith suffix) s take (s.length - suffix.length) else s
 }
