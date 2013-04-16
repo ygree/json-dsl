@@ -21,6 +21,8 @@ object JsonBuilder {
   def nul() = Null
   
   def prop(p: Property): Property = p
+
+  def value[T <% Json.Val](v: T): Json.Val = v
 }
 
 object JsonConciseBuilder {
